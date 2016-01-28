@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>iOS WKWebview api and javascript</title>
+	 <style type="text/css">
+      * {
+          font-size: 50px; 
+      }
+      p {
+        background-color: rgb(192,192,192);
+        color: red;
+        font-size: 35px; 
+      }
+      div {
+        margin-top: 50px;
+        margin-bottom: 50px; 
+      }
+     
+  </style>
+</head>
+
+<body>
+<div>
+<h1>iOS WKWebview api and javascript</h1>
+<div><input type='button' value='showAlert' onclick='showAlert()'></div>
+<div><input type='button' value='showConfirm' onclick='showConfirm()'></div>
+<div><input type='button' value='showPrompt' onclick='showPrompt()'></div>
+<div><input type='button' value='callNative' onclick='callNative()'></div>
+</div>
+<div>
+<p id ='panleresult'></p>
+</div>
+<div><a href="http://www.beequick.cn">爱鲜蜂闪电送达</a></div>
+<div><a href="http://www.baidu.com">百度一下</a></div>
+<script type="text/javascript">
+function showAlert(){
+  alert('javascript show a alert panel')
+}
+function showConfirm(){
+  var ret = confirm('javascript show  a confirm panel')
+  document.getElementById('panleresult').innerHTML = "panle result is " + ret
+}
+function showPrompt(){
+  var ret = prompt('javascript show a prompt panel','please input bank card password')
+  document.getElementById('panleresult').innerHTML = 'panel result is '+ ret
+}
+//js call native
+function callNative(){
+   window.webkit.messageHandlers.beequick.postMessage({body:{"id":20,"name":"Jobs","ext":[1,2,3,4,5]}})
+}
+//native call js，js函数返回值就是evaluateJavaScript(javaScriptString: String, completionHandler: ((AnyObject?, NSError?) -> Void)? completionHandler里的object,js出错就在error里
+function nativeCallJS(text) {
+  var object = JSON.parse(text)
+  var des = "object id is " + object.id +" ," + "object name is " + object.name
+  alert(des)
+  var ret = 0
+  for (index in object.ext) {
+      ret += object.ext[index]
+  }
+  return ret 
+}
+</script>
+</body>
+</html>
